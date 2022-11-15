@@ -10,6 +10,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Button
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
@@ -36,10 +37,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 type Props = {
+  dispatch: React.Dispatch<Action>;
   items: Array<FormType>;
 };
 
-const EquipmentList = ({ items }: Props) => {
+const EquipmentList = ({ dispatch, items }: Props) => {
+
+  const deleteRow = (index) => {
+    dispatch({ type: 'delete', payload: index });
+  }
+
   return (
     <>
       <Typography variant="h5" component="h3">
@@ -53,6 +60,7 @@ const EquipmentList = ({ items }: Props) => {
                 <StyledTableCell>Equipment Name</StyledTableCell>
                 <StyledTableCell align="right">Sensor Name</StyledTableCell>
                 <StyledTableCell align="right">Sensor Setpoint</StyledTableCell>
+                <StyledTableCell align="right">Actions</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -70,6 +78,11 @@ const EquipmentList = ({ items }: Props) => {
                   </StyledTableCell>
                   <StyledTableCell align="right">
                     {row.sensorSetPoint}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    <Button type="button" variant="contained" onClick={() => deleteRow(index)}>
+                      Delete
+                    </Button>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}

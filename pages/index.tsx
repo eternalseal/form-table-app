@@ -5,12 +5,16 @@ import React from 'react';
 import EquipmentForm, { FormType } from '../components/EquipmentForm';
 import EquipmentList from '../components/EquipmentList';
 
-export type Action = { type: 'add'; payload: FormType };
+export type Action = { type: string; payload: FormType };
 
 const reducer = (state: Array<FormType>, action: Action): Array<FormType> => {
   switch (action.type) {
     case 'add': {
       return [...state, action.payload];
+    }
+    case 'delete': {
+      const index = state.indexOf(action.payload);
+      return [...state.splice(index, 1)];
     }
   }
 };
@@ -31,8 +35,8 @@ export default function Home() {
         <Grid item xs={12} md={4}>
           <EquipmentForm dispatch={dispatch} items={state} />
         </Grid>
-        <Grid item xs={12} md={8}>
-          <EquipmentList items={state} />
+        <Grid item xs={12} md={6}>
+          <EquipmentList dispatch={dispatch} items={state} />
         </Grid>
       </Grid>
     </Box>

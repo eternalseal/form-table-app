@@ -24,9 +24,12 @@ const defaultValues = {
 
 const schema = z.object({
   equipmentType: z.string().min(2, 'Please select an option'),
-  equipmentName: z.string().refine((val) => ALPHA_NUMERIC_REGEX.test(val), {
-    message: 'Must be alphanumeric string',
-  }),
+  equipmentName: z
+    .string()
+    .min(3, 'Equipment name should be at least 3 characters')
+    .refine((val) => ALPHA_NUMERIC_REGEX.test(val), {
+      message: 'Must be alphanumeric string',
+    }),
   sensorType: z.string().min(2, 'Please select an option'),
   sensorName: z.string().refine((val) => ALPHA_NUMERIC_REGEX.test(val), {
     message: 'Must be alphanumeric string',
