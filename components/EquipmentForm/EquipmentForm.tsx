@@ -11,6 +11,14 @@ type Props = {
   dispatch: React.Dispatch<Action>;
 };
 
+const defaultValues = {
+  equipmentType: '',
+  equipmentName: '',
+  sensorType: '',
+  sensorName: '',
+  sensorSetPoint: 0,
+};
+
 const schema = z.object({
   equipmentType: z.string(),
   equipmentName: z.string().refine((val) => ALPHA_NUMERIC_REGEX.test(val), {
@@ -26,13 +34,24 @@ const schema = z.object({
 export type FormType = z.infer<typeof schema>;
 
 const EquipmentForm = ({ dispatch }: Props) => {
-  const { control, handleSubmit } = useForm<FormType>({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitSuccessful },
+  } = useForm<FormType>({
     resolver: zodResolver(schema),
+    defaultValues: defaultValues,
   });
 
   const onSubmit: SubmitHandler<FormType> = (data) => {
     dispatch({ type: 'add', payload: data });
   };
+
+  // reference https://react-hook-form.com/api/useform/reset
+  React.useEffect(() => {
+    reset(defaultValues);
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
