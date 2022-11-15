@@ -1,11 +1,4 @@
-import {
-  act,
-  fireEvent,
-  getByTestId,
-  render,
-  screen,
-  within,
-} from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { setupWrapper } from '../../lib/testUtil';
