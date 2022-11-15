@@ -16,22 +16,7 @@ const reducer = (state: Array<FormType>, action: Action): Array<FormType> => {
 };
 
 export default function Home() {
-  const [state, dispatch] = React.useReducer(reducer, [
-    {
-      equipmentType: 'ahu',
-      equipmentName: 'Value 1',
-      sensorType: 'pressure',
-      sensorName: 'Value 2',
-      sensorSetPoint: 3,
-    },
-    {
-      equipmentType: 'ahu',
-      equipmentName: 'Value 3',
-      sensorType: 'pressure',
-      sensorName: 'Value 4',
-      sensorSetPoint: 4,
-    },
-  ]);
+  const [state, dispatch] = React.useReducer(reducer, []);
 
   return (
     <Box sx={{ minHeight: '100vh' }}>

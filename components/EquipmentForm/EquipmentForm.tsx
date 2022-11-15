@@ -38,12 +38,7 @@ export type FormType = z.infer<typeof schema>;
 
 const EquipmentForm = ({ dispatch, items }: Props) => {
   const toast = useToast();
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { isSubmitSuccessful },
-  } = useForm<FormType>({
+  const { control, handleSubmit, reset, setError } = useForm<FormType>({
     resolver: zodResolver(schema),
     defaultValues: defaultValues,
   });
@@ -51,14 +46,19 @@ const EquipmentForm = ({ dispatch, items }: Props) => {
   const onSubmit: SubmitHandler<FormType> = (data) => {
     const duplicate = items.find(
       (val) =>
-        val.equipmentName === data.equipmentName &&
+        val.equipmentName === data.equipmentName ||
         val.sensorName === data.sensorName,
     );
     if (duplicate) {
       toast({ type: 'error', message: 'Duplicate item' });
+      if (duplicate.equipmentName === data.equipmentName) {
+        setError('equipmentName', { message: 'Duplicate' });
+      }
+      if (duplicate.sensorName === data.sensorName) {
+        setError('equipmentName', { message: 'Duplicate' });
+      }
       return;
     }
-
     dispatch({ type: 'add', payload: data });
     reset(defaultValues);
     toast({ type: 'success', message: 'Successfully added equipment' });
