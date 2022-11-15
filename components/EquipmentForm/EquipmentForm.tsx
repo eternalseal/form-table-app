@@ -4,11 +4,14 @@ import React from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { z } from 'zod';
 
+import { useToast } from '../../Context/ToastContext';
 import { Action } from '../../pages';
 
 const ALPHA_NUMERIC_REGEX = /^\w+$/;
+
 type Props = {
   dispatch: React.Dispatch<Action>;
+  items: Array<FormType>;
 };
 
 const defaultValues = {
@@ -20,11 +23,11 @@ const defaultValues = {
 };
 
 const schema = z.object({
-  equipmentType: z.string(),
+  equipmentType: z.string().min(2, 'Please select an option'),
   equipmentName: z.string().refine((val) => ALPHA_NUMERIC_REGEX.test(val), {
     message: 'Must be alphanumeric string',
   }),
-  sensorType: z.string(),
+  sensorType: z.string().min(2, 'Please select an option'),
   sensorName: z.string().refine((val) => ALPHA_NUMERIC_REGEX.test(val), {
     message: 'Must be alphanumeric string',
   }),
@@ -33,7 +36,8 @@ const schema = z.object({
 
 export type FormType = z.infer<typeof schema>;
 
-const EquipmentForm = ({ dispatch }: Props) => {
+const EquipmentForm = ({ dispatch, items }: Props) => {
+  const toast = useToast();
   const {
     control,
     handleSubmit,
@@ -45,13 +49,20 @@ const EquipmentForm = ({ dispatch }: Props) => {
   });
 
   const onSubmit: SubmitHandler<FormType> = (data) => {
-    dispatch({ type: 'add', payload: data });
-  };
+    const duplicate = items.find(
+      (val) =>
+        val.equipmentName === data.equipmentName &&
+        val.sensorName === data.sensorName,
+    );
+    if (duplicate) {
+      toast({ type: 'error', message: 'Duplicate item' });
+      return;
+    }
 
-  // reference https://react-hook-form.com/api/useform/reset
-  React.useEffect(() => {
+    dispatch({ type: 'add', payload: data });
     reset(defaultValues);
-  }, [isSubmitSuccessful, reset]);
+    toast({ type: 'success', message: 'Successfully added equipment' });
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -147,7 +158,7 @@ const EquipmentForm = ({ dispatch }: Props) => {
               variant="outlined"
               type="number"
               id="sensorSetPoint"
-              label="Sensor Set point"
+              label="Sensor Setpoint"
               ref={field.ref}
               value={field.value}
               onChange={(event) => field.onChange(Number(event.target.value))}

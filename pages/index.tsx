@@ -24,6 +24,13 @@ export default function Home() {
       sensorName: 'Value 2',
       sensorSetPoint: 3,
     },
+    {
+      equipmentType: 'ahu',
+      equipmentName: 'Value 3',
+      sensorType: 'pressure',
+      sensorName: 'Value 4',
+      sensorSetPoint: 4,
+    },
   ]);
 
   return (
@@ -37,7 +44,7 @@ export default function Home() {
       </AppBar>
       <Grid container spacing={4} marginTop={8} padding={4}>
         <Grid item xs={12} md={4}>
-          <EquipmentForm dispatch={dispatch} />
+          <EquipmentForm dispatch={dispatch} items={state} />
         </Grid>
         <Grid item xs={12} md={8}>
           <EquipmentList items={state} />

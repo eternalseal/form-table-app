@@ -3,12 +3,30 @@ import {
   Table,
   TableBody,
   TableCell,
+  tableCellClasses,
   TableContainer,
   TableHead,
   TableRow,
   Typography,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import React from 'react';
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.dark,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(even)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+}));
 
 import { FormType } from '../EquipmentForm';
 
@@ -26,23 +44,28 @@ const EquipmentList = ({ items }: Props) => {
         <Table sx={{ minWidth: 650 }} aria-label="simple table" stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell>Equipment Name</TableCell>
-              <TableCell align="right">Sensor Name</TableCell>
-              <TableCell align="right">Sensor Setpoint</TableCell>
+              <StyledTableCell>Equipment Name</StyledTableCell>
+              <StyledTableCell align="right">Sensor Name</StyledTableCell>
+              <StyledTableCell align="right">Sensor Setpoint</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {items.map((row, index) => (
-              <TableRow
+              <StyledTableRow
                 key={`${row.equipmentName} ${index}`}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                data-testid={`equipment-row-${index}`}
               >
-                <TableCell component="th" scope="row">
+                <StyledTableCell component="th" scope="row">
                   {row.equipmentName}
-                </TableCell>
-                <TableCell align="right">{row.sensorName}</TableCell>
-                <TableCell align="right">{row.sensorSetPoint}</TableCell>
-              </TableRow>
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  {row.sensorName}
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  {row.sensorSetPoint}
+                </StyledTableCell>
+              </StyledTableRow>
             ))}
           </TableBody>
         </Table>
