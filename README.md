@@ -32,4 +32,4 @@ You can preview the application in production mode by running the following comm
 pnpm start
 ```
 
-and you should see the application running on <http://localhost:3001>.
+and you should see the application running on <http://localhost:3000>.
