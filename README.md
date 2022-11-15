@@ -29,7 +29,7 @@ pnpm build
 You can preview the application in production mode by running the following command:
 
 ```bash
-pnpm preview
+pnpm start
 ```
 
-and you should see the application running on <http://localhost:3001>.
+and you should see the application running on <http://localhost:3000>.
